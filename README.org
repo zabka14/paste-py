@@ -1,5 +1,5 @@
 * Paste-py
-**Modified version by myself to add password security to the app
+** Modified version by myself to add password security to the app
 Paste-py is a dead simple paste service written in Python. An
 instance of the original script is running at [[http://paste.awesom.eu]].
 
