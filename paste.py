@@ -359,8 +359,17 @@ def view_user(user, handler):
     handler.write(html_post)
 
 ### App
-class MainHandler(tornado.web.RequestHandler):
+
+
+class BaseHandler(tornado.web.RequestHandler):
+    def get_current_user(self):
+        return self.get_secure_cookie("user")
+
+class MainHandler(BaseHandler):
     def get(self):
+        if not self.current_user:
+            self.redirect("/login")
+            return
         args = extract_args(self.request.uri)
         if self.get_argument('id', False):
             view_paste(self.get_argument('id'), args, self)
@@ -383,6 +392,7 @@ class MainHandler(tornado.web.RequestHandler):
     def post(self):
         self.get()
 
+
 class ViewHandler(tornado.web.RequestHandler):
     def get(self, name, args, last):
         view_paste(name, extract_args(args), self)
@@ -392,22 +402,44 @@ class UserViewHandler(tornado.web.RequestHandler):
         paste = user + '/' + name
         view_paste(paste, extract_args(args, self))
 
-# Ajout password
-class UserHandler(tornado.web.RequestHandler):
+class UserHandler(BaseHandler):
     def get(self, user):
+        if not self.current_user:
+            self.redirect("/login")
+            return
         view_user(user, self)
 
-class RawHandler(tornado.web.RequestHandler):
+class RawHandler(BaseHandler):
     def get(self, name):
+        if not self.current_user:
+            self.redirect("/login")
+            return
         view_paste(name, {'raw': ''}, self)
 
-# Ajout password
-class UserRawHandler(tornado.web.RequestHandler):
+class UserRawHandler(BaseHandler):
     def get(self, user, name):
+        if not self.current_user:
+            self.redirect("/login")
+            return
         view_paste(name, {'raw': '', 'user': user}, self)
+
+class LoginHandler(BaseHandler):
+    def get(self):
+        self.write('<html><body><form action="/login" method="post">'
+                   'Password: <input type="text" name="name">'
+                   '<input type="submit" value="Sign in">'
+                   '</form></body></html>')
+
+    def post(self):
+        if (self.get_argument("name")=="####################"):
+            self.set_secure_cookie("user", self.get_argument("name"))
+            self.redirect("/")
+        else:
+            self.redirect("/login")
 
 application = tornado.web.Application([
     (r"/", MainHandler),
+    (r"/login", LoginHandler),
     (r"/user/([^/]+)/?", UserHandler),
     (r"/raw/([^&]+)", RawHandler),
     (r"/raw/([^/]+)/([^&]+)", UserRawHandler),
@@ -417,11 +449,11 @@ application = tornado.web.Application([
     # with the other routes
     (r"/([^&]+)((&[^&]+)*)", ViewHandler),
     (r"/([^/]+)/([^&]+)((&[^&]+)*)", UserViewHandler),
-])
+], cookie_secret="############################")
 
 define('addr', group='webserver', default='127.0.0.1',
        help='Address on which to listen')
-define('port', group='webserver', default=8888,
+define('port', group='webserver', default=8080,
        help='Port on which to listen')
 define('socket', group='webserver', default=None,
        help='Unix socket file on which to listen')
