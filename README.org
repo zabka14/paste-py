@@ -56,7 +56,7 @@ the script to launch paste-py as a daemon, grizzled is also needed.
 * Password setting
 There's two thing to do in order to setup the password.
 First, input your password in the global var PASSWORD (located on the top of the paste.py file).
-Then, go to the end of the file, in the line `cookie_secret="azertyuiopqsdfghjklmwxcvbn"` and replace the
+Then, go to the end of the file, in the line =cookie_secret="azertyuiopqsdfghjklmwxcvbn"= and replace the
 content with a anything you want. This is the string used to salt the cookie used to check if a user
 is authentified.
 
