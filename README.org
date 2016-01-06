@@ -1,6 +1,13 @@
-* paste-py
-paste-py is a dead simple paste service written in Python. An
-instance is running at [[http://paste.awesom.eu]].
+* Paste-py
+**Modified version by myself to add password security to the app
+Paste-py is a dead simple paste service written in Python. An
+instance of the original script is running at [[http://paste.awesom.eu]].
+
+
+http://www.dancourse.co.uk/wp-content/uploads/2015/07/nope.jpg
+
+![alt text][logo]
+[logo]: http://www.dancourse.co.uk/wp-content/uploads/2015/07/nope.jpg "Nope !"
 
 * Using it
 ** Script
@@ -37,9 +44,25 @@ something, and you can access all your pastes by browsing
 your pastes, so think twice before pasting something sensitive. In
 case you *really* need to delete a paste, contact me.
 
+** Passwords
+This version of Paste-py is protected by password (ie. you won't be able to acces
+the application without going through the login page, which ask you for a password).
+I create this when I was studying in the IUT of Nantes. With two friends we were
+using past-awesom.eu a lot to exchange source code, but bad intended peoples used to
+go check our pastes and re-use them. To avoid this, I've reworked a bit this script
+which is originaly from https://github.com/acieroid/paste-py to add a password protection.
+Check below to see how to setup the password.
+
 * Installing
 The only dependencies are Tornado and Pygments. If you want to use
 the script to launch paste-py as a daemon, grizzled is also needed.
+
+* Password setting
+There's two thing to do in order to setup the password.
+First, input your password in the global var PASSWORD (located on the top of the paste.py file).
+Then, go to the end of the file, in the line `cookie_secret="azertyuiopqsdfghjklmwxcvbn"` and replace the
+content with a anything you want. This is the string used to salt the cookie used to check if a user
+is authentified.
 
 #+BEGIN_SRC shell
 $ pip install tornado pygments grizzled

@@ -24,7 +24,7 @@ import codecs
 
 ### Options
 title = 'Paste it des Vrais !'
-doc = '(<a href="https://github.com/acieroid/paste-py/">doc</a>|<a href="https://raw.github.com/acieroid/paste-py/master/paste.sh">script</a>)'
+doc = '(<a href="https://github.com/zabka14/paste-py/">doc</a>|<a href="https://github.com/zabka14/paste-py/blob/master/paste.sh">script</a>)'
 filename_path = 'pastes'
 filename_length = 4
 filename_characters = ascii_letters + digits
@@ -33,6 +33,8 @@ mldown_args = []
 linenos_type = 'table' # 'table', 'inline' or '' (table is copy-paste friendly)
 base_url = '/'
 production = False
+
+PASSWORD = "azertyuiop";
 
 spam = ["buy ", "phentermine", "pill", "cialis", "carisoprodol", "soma ",
         " soma", "carisoprodol", " mg", "30mg", "adipex", "business",
@@ -426,16 +428,17 @@ class UserRawHandler(BaseHandler):
 class LoginHandler(BaseHandler):
     def get(self):
         self.write('<html><body><form action="/login" method="post">'
-                   'Password: <input type="text" name="name">'
+                   'Password: <input type="password" name="name">'
                    '<input type="submit" value="Sign in">'
                    '</form></body></html>')
 
     def post(self):
-        if (self.get_argument("name")=="####################"):
+        global PASSWORD
+        if (self.get_argument("name")==PASSWORD):
             self.set_secure_cookie("user", self.get_argument("name"))
             self.redirect("/")
         else:
-            self.redirect("/login")
+            self.redirect("http://www.dancourse.co.uk/wp-content/uploads/2015/07/nope.jpg")
 
 application = tornado.web.Application([
     (r"/", MainHandler),
@@ -449,7 +452,8 @@ application = tornado.web.Application([
     # with the other routes
     (r"/([^&]+)((&[^&]+)*)", ViewHandler),
     (r"/([^/]+)/([^&]+)((&[^&]+)*)", UserViewHandler),
-], cookie_secret="############################")
+], cookie_secret="azertyuiopqsdfghjklmwxcvbn")
+
 
 define('addr', group='webserver', default='127.0.0.1',
        help='Address on which to listen')
