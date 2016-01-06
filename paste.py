@@ -23,7 +23,7 @@ from sys import argv
 import codecs
 
 ### Options
-title = 'Paste it §'
+title = 'Paste it des Vrais !'
 doc = '(<a href="https://github.com/acieroid/paste-py/">doc</a>|<a href="https://raw.github.com/acieroid/paste-py/master/paste.sh">script</a>)'
 filename_path = 'pastes'
 filename_length = 4
@@ -110,10 +110,6 @@ def name_field():
     res += '<input type="text" name="user" id="user"/><br/>'
     return res
 
-def password_field():
-    res = '<label for="password">Password (for one the user):</label><br/>'
-    res += '<input type="password" name="password" id="password"/><br/>'
-    return res
 
 def comment_field():
     res = '<label for="comment">Comment (optional):</label><br/>'
@@ -128,7 +124,6 @@ def paste_form():
     res += language_box()
     res += option_boxes()
     res += name_field()
-    res += password_field()
     res += comment_field()
     res += '<input type="submit" value="Paste"/>'
     res += '</form>'
@@ -246,6 +241,18 @@ def extract_args(uri):
     return dict(content)
 
 def view_paste(paste, args, handler):
+    popup = '''<script>
+    function myFunction() {
+    var person = prompt("Please enter the secret password", "");
+    document.getElementById("myPastes").style.display = 'none';
+    if (person != null) {
+        if (person != "biche")
+            document.location.replace('http://www.dancourse.co.uk/wp-content/uploads/2015/07/nope.jpg');
+        }
+    }
+    myFunction();
+    </script>
+    '''
     pre = html_pre
     post = ''
     paste_content = read_paste(filename_path + '/' + paste)
@@ -278,6 +285,7 @@ def view_paste(paste, args, handler):
             pre += '<pre>'
             post += '</pre>'
     post += html_post
+    pre += popup
     handler.content_type = 'text/html'
     handler.write(pre)
     handler.write(paste_content)
@@ -325,16 +333,18 @@ def view_index(handler):
     handler.write(body)
     handler.write(html_post)
 
+# Password ?
 def view_user(user, handler):
     user = escape(user)
     if not valid_username(user):
         raise tornado.web.HTTPError(404)
     pastes = pastes_for_user(user)
+
     body = '<h2>Pastes for %s</h2>' % user
     if pastes == []:
         body += '<p>No paste for this user</p>'
     else:
-        body += '<ul>'
+        body += '<ul id="myPastes">'
     for paste in pastes:
         meta = read_meta(user, paste)
         body += ('<li><a href="%s%s/%s">%s</a>' %
