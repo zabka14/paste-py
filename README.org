@@ -4,8 +4,6 @@ Paste-py is a dead simple paste service written in Python. An
 instance of the original script is running at [[http://paste.awesom.eu]].
 
 
-http://www.dancourse.co.uk/wp-content/uploads/2015/07/nope.jpg
-
 ![alt text][logo]
 [logo]: http://www.dancourse.co.uk/wp-content/uploads/2015/07/nope.jpg "Nope !"
 
