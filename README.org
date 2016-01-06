@@ -5,8 +5,6 @@ instance of the original script is running at [[http://paste.awesom.eu]].
 
 
 
-![Nope](http://www.dancourse.co.uk/wp-content/uploads/2015/07/nope.jpg)
-
 * Using it
 ** Script
 The most useful utility is the [[https://raw.github.com/acieroid/paste-py/master/paste.sh][paste.sh]] script: save it somewhere
