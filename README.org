@@ -3,6 +3,12 @@
 Paste-py is a dead simple paste service written in Python. An
 instance of the original script is running at [[http://paste.awesom.eu]].
 
+** To do :
+- Don't protect the full app with a password, only users
+
+
+
+
 
 
 * Using it
