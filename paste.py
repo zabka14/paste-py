@@ -110,6 +110,11 @@ def name_field():
     res += '<input type="text" name="user" id="user"/><br/>'
     return res
 
+def password_field():
+    res = '<label for="password">Password (for one the user):</label><br/>'
+    res += '<input type="password" name="password" id="password"/><br/>'
+    return res
+
 def comment_field():
     res = '<label for="comment">Comment (optional):</label><br/>'
     res += '<input type="text" name="comment" id="comment"/>'
@@ -123,6 +128,7 @@ def paste_form():
     res += language_box()
     res += option_boxes()
     res += name_field()
+    res += password_field()
     res += comment_field()
     res += '<input type="submit" value="Paste"/>'
     res += '</form>'
@@ -376,6 +382,7 @@ class UserViewHandler(tornado.web.RequestHandler):
         paste = user + '/' + name
         view_paste(paste, extract_args(args, self))
 
+# Ajout password
 class UserHandler(tornado.web.RequestHandler):
     def get(self, user):
         view_user(user, self)
@@ -384,6 +391,7 @@ class RawHandler(tornado.web.RequestHandler):
     def get(self, name):
         view_paste(name, {'raw': ''}, self)
 
+# Ajout password
 class UserRawHandler(tornado.web.RequestHandler):
     def get(self, user, name):
         view_paste(name, {'raw': '', 'user': user}, self)
